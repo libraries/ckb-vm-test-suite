@@ -1,0 +1,13 @@
+parameters:
+  out: ''
+steps:
+- script: |
+    sudo docker run --rm -v '${{ parameters.directory }}:/out' xxuejie/riscv-gnu-toolchain-rv64imac:20190529 cp -r /riscv /out/
+    export RISCV='${{ parameters.directory }}/riscv'
+    export PATH='$PATH:$RISCV/bin'
+  displayName: Extract RISCV binaries
+- script: |
+    sudo apt-get install git build-essential libcurl4-openssl-dev libelf-dev libdw-dev cmake binutils-dev
+    git clone https://github.com/SimonKagstrom/kcov
+    mkdir -p kcov/build && cd kcov/build && cmake .. && make && sudo make install && cd ../..
+  displayName: Install kcov

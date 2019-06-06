@@ -1,0 +1,10 @@
+jobs:
+  - job: TestSuite
+    pool:
+      vmImage: 'ubuntu-16.04'
+    steps:
+      - template: azure/ubuntu-dependencies.yml
+        parameters:
+          out: variables['Build.SourcesDirectory']
+      - script: ./test.sh --update-ckb-vm
+        displayName: Run test suite
